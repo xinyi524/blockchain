@@ -1,0 +1,417 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Home</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
+
+	<script src="js/jquery.min.js"></script>
+	<!--	modal-->
+	<script src="js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="js/web3.min.js"></script>
+
+	<script type="text/javascript" src="web3/UserABI.js"></script>
+	<script type="text/javascript" src="web3/index.js"></script>
+	<script type="text/javascript" src="web3/view.js"></script>
+	<script type="text/javascript" src="js/script.js"></script>
+	<script type="text/javascript" src="js/fundClass.js"></script>
+
+</head>
+
+<body>
+	<header>
+		<!--/.navbar-header-->
+		<a href="#"><i></i><span>Account</span></a>
+		<ul>
+			<li id="userAddress"><a href="#"><span>Please login your MetaMask Account!</span></a></li>
+			<li>
+				<a href="#"><span class="changeBalance">Topup / Withdrow</span></a>
+			</li>
+			<li><a href="#"><span class="viewAccount">View Account Information</span></a></li>
+		</ul>
+
+	</header>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-4">
+				<h1>Information</h1>
+				<p>Total Balance <a id="superBalance"></a></p>
+				<p>Charity Funds <a id="fundsNum1"></a></p>
+				<p>Projects <a id="fundsNum2"></a></p>
+				<p>Institutions<a id="fundsNum3"></a></p>
+				<p>Personal<a id="fundsNum4"></a></p>
+
+
+				<div class="newFund">
+					<h1>New Funding Request</h1>
+					<div class="input-group mb-3">
+
+						<label class="input-group-text" for="inputGroupSelect01">Type</label>
+
+						<select class="custom-select newFundType" id="inputGroupSelect01">
+							<option selected>Choose...</option>
+							<option value="1">Charity</option>
+							<option value="2">Projects</option>
+							<option value="3">Institutions</option>
+							<option value="4">Personal</option>
+						</select>
+					</div>
+
+					<div class="input-group mb-3">
+
+						<label class="input-group-text">Annual interest</label>
+
+						<input type="number" class="form-control" id="newFundInterest" aria-describedby="basic-addon2">
+						<div class="input-group-append">
+							<span class="input-group-text" id="basic-addon2">%</span>
+						</div>
+					</div>
+
+					<div class="input-group-prepend">
+						<label class="input-group-text">Min deposit</label>
+
+						<input type="number" id="minDeposit">
+
+						<label class="input-group-text">Days</label>
+					</div>
+
+					<button type="button" class="btn btn-outline-secondary" id="fundConfirm">Confirm</button>
+				</div>
+			</div>
+
+			<div class="col">
+				<h2><span>Fundings</span></h2>
+
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col"><button type="button" class="btn btn-light">Charity</button></th>
+							<th scope="col"><button type="button" class="btn btn-light">Projects</button></th>
+							<th scope="col"><button type="button" class="btn btn-light">Institution</button></th>
+							<th scope="col"><button type="button" class="btn btn-light">Personal</button></th>
+							<th scope="col"><button type="button" class="btn btn-light">closedlist</button></th>
+						</tr>
+					</thead>
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">ID</th>
+							<th scope="col">Type</th>
+							<th scope="col">Interest</th>
+							<th scope="col">Balance</th>
+							<th scope="col">Min deposit</th>
+							<th scope="col"></th>
+						</tr>
+					</thead>
+
+					<tbody id="allType">
+					</tbody>
+					<tbody id="charity">
+					</tbody>
+					<tbody id="projects">
+					</tbody>
+					<tbody id="institution">
+					</tbody>
+					<tbody id="personal">
+					</tbody>
+					<tbody id="closedlist">
+					</tbody>
+
+				</table>
+
+			</div>
+		</div>
+	</div>
+
+	<!--		*****************************************-->
+
+	<div class="ownAccountInfo container">
+
+		<div class="col">
+			<ul>
+				<h3>Own Information</h3>
+				<li>
+					<h6>Balance</h6>
+					<p id="accountBalance"></p>
+				</li>
+				<hr>
+				<li>
+					<h6>Account state</h6>
+					<p id="accountState"></p>
+				</li>
+
+				<hr>
+				<li>
+					<h6>Default Times</h6>
+					<p id="accountDefaultCount"></p>
+				</li>
+			</ul>
+
+			<button class="showOwnInfo">show</button>
+			<div class="ownFundsList">
+				<h2>Own Funds</h2>
+				<table class="table">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">ID</th>
+							<th scope="col">State</th>
+							<th scope="col">Balance</th>
+							<th scope="col">MinDepoTime</th>
+							<th scope="col">Interest</th>
+							<th></th>
+						</tr>
+					</thead>
+
+					<tbody id="ownFundInfo">
+					</tbody>
+
+				</table>
+			</div>
+
+			<div class="ownInvestmentsList">
+				<h2>Investments</h2>
+				<table class="table">
+					<thead class="thead-dark">
+						<tr>
+							<th>Fund</th>
+							<th>Value</th>
+							<th>Date</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody id="investInfo">
+					</tbody>
+				</table>
+			</div>
+
+			<div class="ownFundPending">
+				<h2>Pending Return Request</h2>
+				<table class="table">
+					<thead class="thead-dark">
+						<tr>
+							<th>Fund</th>
+							<th>Value</th>
+							<th>Date</th>
+						</tr>
+					</thead>
+					<tbody id="fundPending">
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!--***************************************************-->
+	<!-- Invest-->
+	<div class="modal" tabindex="-1" role="dialog" id="investInfoMod">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Invest</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p><span>FundsID:</span>
+						<span id="investFundID"></span></p>
+					<input type="number" id="investValue" placeholder="value (Wei)">
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-outline-secondary" id="investValueSubmit">Confirm</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<hr>
+
+	<!-- fund info-->
+	<div class="modal" tabindex="-1" role="dialog" id="fundInfo">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Fund Information</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>FundID: <span id="fundInfoID"></span></p>
+					<p>Funder: <span id="funderAddress"></span></p>
+					<p>Fund Balance: <span id="fundBalance"></span></p>
+					<p>Default Times: <span id="fundDefaultTime"></span></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- account information-->
+	<div class="modal" tabindex="-1" role="dialog" id="userInfo">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Funder account</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p id="otherUserAddress"></p>
+					<p id="accountState"></p>
+					<p id="defaultCount"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Top up-->
+	<div class="modal" tabindex="-1" role="dialog" id="topupORwithdraw">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Topup / Withdrow</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<select id="tORw">
+						<option value="t">Topup</option>
+						<option value="w">Withdraw</option>
+					</select>
+					<input type="number" class="required form-control" placeholder="Value *" name="value" value="" id="changeValue">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-outline-secondary" id="balanceChangeSubmit">Confirm</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- fund delete-->
+	<div class="modal" tabindex="-1" role="dialog" id="fundDeleteMod">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Delete Fund</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>Are you sure you want to delete that fund?</p>
+					<p>FundsID: <span id="deleteFundID"></span></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-outline-secondary" id="fundDeleteSubmit">Confirm</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- change fund state-->
+	<div class="modal" tabindex="-1" role="dialog" id="changeFundStateMod">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Delete Fund</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>Change funding state?</p>
+					<p>FundsID: <span id="changeStateFundID"></span></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-outline-secondary" id="changeFundStateSubmit">Confirm</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- withdraw invest-->
+	<div class="modal" tabindex="-1" role="dialog" id="investWithdrawMod">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Invest Withdraw</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>FundID: <span id="investWithdrawFundID"></span></p>
+					<input type="number" id="investWithdrawValue" placeholder="value (Wei)">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-outline-secondary" id="investWithdrawValueSubmit">Confirm</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- changeFundMinDeposit-->
+	<div class="modal" tabindex="-1" role="dialog" id="changeFundMinDepositMod">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Change fund deposit time</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>FundID: <span id="changeMinDepositFundID"></span> <span id="changeFundMinDepositFundID"></span></p>
+					<input type="number" id="newDepositTime" placeholder="(Days)">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-outline-secondary" id="fundMinDepositSubmit">Confirm</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- account returnFundPending-->
+	<div class="modal" tabindex="-1" role="dialog" id="returnFundPending">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Modal title</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<h4>Return: <span id="pendingValue"></span> Wei</h4>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-outline-secondary" id="returnPendingSubmit">Confirm</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--********************************************************-->
+
+</body>
+
+</html>

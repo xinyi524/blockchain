@@ -1,0 +1,365 @@
+var MetaAccount;
+var myContract;
+var superAddress;
+var allFunds = new Array;
+var ownInvests = new Array;
+var ownFunds = new Array;
+var ownInvest = new Array;
+
+window.addEventListener('load', function () {
+
+	// Checking if Web3 has been injected by the browser (Mist/MetaMask)
+
+	if (typeof web3 !== 'undefined') {
+		// Use Mist/MetaMask's provider
+		web3 = new Web3(web3.currentProvider);
+	} else {
+		console.log('No web3? You should consider trying MetaMask!');
+		// fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
+		web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+	}
+
+	web3.setProvider(new Web3.providers.HttpProvider("http://localhost:8545"));
+
+	// Now you can start your app & accesss web3 freely:
+
+	startApp();
+});
+
+function startApp() {
+	//////////////////////////////////////////
+	myContractAddress2 = "0x69098c30e765c0a597a2f71d752f2abdbc7d6ffd";
+	myContractAddress3 = "0x541a729ae1ccb41f9f9ee01ae482dd7f30ed55df";
+	myContractAddress4 = "0x4351be3cf6ede3ab62198a9c6d384fea6f36bbec";
+
+	account2 = "0x2342f5d8cAaE2cA6292CD18D6B8de8a39d13ACbD";
+	account3 = "0x3db82068533Cc8601032c74B46cBf34c517C48fb";
+	account4 = "0x8ea165f0947538a26190ae3508BDda0Cfc15f7a5";
+
+	// Instantiate Contracts
+	myContract = new web3.eth.Contract(UserABI, myContractAddress2);
+
+	myContract.methods.superAddress().call()
+		.then(function (address) {
+			superAddress = address.toLowerCase();
+		});
+
+
+	var accountInterval = setInterval(function () {
+		if (ethereum.selectedAddress !== MetaAccount) {
+			MetaAccount = ethereum.selectedAddress;
+
+			$("#userAddress").html('<li id="userAddress"><a>' + MetaAccount + '<a></li>');
+			if (ethereum.selectedAddress == account2.toLowerCase()) {
+				myContract = new web3.eth.Contract(UserABI, myContractAddress2);
+			} else if (ethereum.selectedAddress == account3.toLowerCase()) {
+				myContract = new web3.eth.Contract(UserABI, myContractAddress3);
+			} else if (ethereum.selectedAddress == account4.toLowerCase()) {
+				myContract = new web3.eth.Contract(UserABI, myContractAddress4);
+			}
+		}
+		if (ethereum.selectedAddress == superAddress) {
+			window.location.href = '../admin/admin.html';
+		}
+	}, 1000);
+}
+
+//index
+function getSuperInfo() {
+	myContract.methods.getSuperInfo().call({})
+		.then(function (info) {
+			$('#superBalance').html(info.superBalance + " Wei");
+			$('#fundsNum1').html(info.fundsNum1);
+			$('#fundsNum2').html(info.fundsNum2);
+			$('#fundsNum3').html(info.fundsNum3);
+			$('#fundsNum4').html(info.fundsNum4);
+		})
+		.catch(console.log);
+}
+
+//*****************************************************
+function getFundsInfo() {
+	myContract.methods.getFundNum().call({})
+		.then(function (num) {
+			for (var i = 0; i < num; i++) {
+				getFundDetail(i);
+			}
+		})
+		.catch(console.log);
+}
+
+function getFundDetail(id) {
+	myContract.methods.getFundInfo(id).call({
+			from: MetaAccount,
+		})
+		.then(function (fund) {
+			allFunds[id] = fund;
+
+			var temp = fundClass.fundsInfo(fund.id, fund.owner, fund.state, fund.fundType, fund.balance, fund.interest, fund.minDeposit);
+		})
+}
+//***************************************************
+
+function getOwnAccount() {
+	myContract.methods.getOwnAccount().call({
+			from: ethereum.selectedAddress,
+		})
+		.then(function (account) {
+			var state;
+			if (account.blacklistID == 0) {
+				state = "TRUE";
+			} else
+				state = "BLACKLISTED";
+
+			$("#accountState").html(
+				'<p id="accountState">' + state + '</p>');
+			$("#accountBalance").html(
+				'<p id="accountBalance">' + account.balance + '</p>');
+			$("#accountDefaultCount").html(
+				'<p id="accountDefaultCount">' + account.defaultCount + '</p>');
+
+			ownFunds = account.fundsID;
+		console.log("Own funding: "+ownFunds);
+
+			for (var i = 0; i < ownFunds.length; i++) {
+				var fundID = account.fundsID[i];
+
+				var node = document.createElement('li');
+				node.className = "clearfix";
+
+				node.innerHTML =
+					'<div class = "id_col">' + allFunds[fundID].id + '</div>' +
+					'<div class = "name_col"><span id="fundState_' + fundID + '">' + allFunds[fundID].state + ' | </span><span class="depositTime" id="deposotTime_' + allFunds[fundID].id + '">Deposit>' + (allFunds[fundID].minDeposit) / (60 * 60 * 24) + ' days | </span> <a href="#" class = "changeDeposit" id="deposit_' + allFunds[fundID].id + '"> Change deposit time | </a><a href="#" class="changeFundState" id="changeState_' + allFunds[fundID].id + '">Change state | </a><a href="#" class="deleteFund" id="deleteFund_' + allFunds[fundID].id + '">Delete</a></div>' +
+					'<div class = "duration_col fundBalance">' + allFunds[fundID].balance + ' Wei</div>' +
+
+					'<div class="date_col fundInterest">' + allFunds[fundID].interest + '</div>';
+				document.getElementById("ownFundInfo").appendChild(node);
+
+				getOwnFundPendingReturn(ownFunds[i]);
+
+				$(".changeDeposit").click(function (event) {
+					document.getElementById("changeFundMinDepositFundID").innerHTML = event.target.id.split("_", 2)[1];
+					$("#changeFundMinDepositMod").modal();
+				});
+
+				$(".changeFundState").click(function (event) {
+					changeFundState(event.target.id.split("_", 2)[1]);
+				});
+
+				$(".deleteFund").click(function (event) {
+					document.getElementById("closeFundID").innerHTML = "Fund ID: " + event.target.id.split("_", 2)[1];
+					$("#fundCloseMod").modal();
+				});
+			}
+		})
+		.catch(console.log);
+}
+
+
+
+//need time between each topup
+function userTopup(_value) {
+	myContract.methods.userTopup().send({
+		from: ethereum.selectedAddress,
+		gas: 3000000,
+		value: _value
+	}, function (err, res) {
+		if (err == null) {
+			alert("Topup successfully!");
+		}
+		console.log(err);
+		console.log(res);
+	});
+}
+
+//**************************************************
+function getInvestHistory() {
+	myContract.methods.getInvestHistoryID().call({
+			from: ethereum.selectedAddress
+		})
+		.then(function (id) {
+			console.log("Invest history: " + id);
+			for (var i = 0; i < id.length; i++) {
+				getInvestInfo(id[i]);
+			}
+		})
+	
+}
+
+function getInvestInfo(id) {
+	myContract.methods.getInvestHistory(id).call({
+			from: ethereum.selectedAddress
+		})
+		.then(function (invest) {
+			ownInvests[id] = invest;
+			console.log(ownInvests);
+
+			var node = document.createElement('li');
+			node.className = "clearfix";
+
+			node.innerHTML =
+				'<div class = "id_col"><a class = "fundInfo">' + invest._fundID + '</a></div>' +
+				'<div class="name_col">' + timeConverter(invest._time) + '</div>' +
+				'<div class = "date_col"><a href="#" class="investWithdraw" id="returnOnInvest_' + id + '">Withdraw</a></div>' +
+				'<div class = "duration_col">' + invest._value + ' Wei</div>';
+			document.getElementById("investInfo").appendChild(node);
+
+			$(".investWithdraw").click(function (event) {
+				document.getElementById("investWithdrawFundID").innerHTML = event.target.id.split("_", 2)[1];
+
+				$("#investWithdrawMod").modal();
+			});
+		})
+	.catch(console.log);
+}
+//************************************************
+
+function getOwnFundPendingReturn() {
+	for(var i = 0;i<ownFunds.length;i++){
+		myContract.methods.getFundPendings(ownFunds[i]).call({
+			from: ethereum.selectedAddress
+		})
+		.then(function (pendingID) {
+			console.log("pending ID: " + pendingID);
+			for (var i = 0; i < pendingID.length; i++) {
+				pendingInfo(pendingID[i]);
+			}
+		})
+		.catch(console.log);
+	}
+}
+
+function pendingInfo(pendingID) {
+	myContract.methods.pendings(fundID).call()
+		.then(function (pending) {
+
+			var node = document.createElement('li');
+			node.className = "clearfix";
+
+			node.innerHTML =
+				'<div class = "id_col"><a class = "pendingInfo">' + pending.fundID + '</a></div>' +
+				'<div class="name_col">' + timeConverter(pending.requiredDate) + '</div>' +
+				'<div class = "date_col"><a href="#" class="investWithdraw" id="returnOnInvest_' + pendingID + '">Return</a></div>' +
+				'<div class = "duration_col">' + Pending.value + ' Wei</div>';
+			document.getElementById("investInfo").appendChild(node);
+		})
+		.catch(console.log);
+}
+//**************************************************
+
+//index, list
+function getOtherAccountInfo(_userID) {
+	myContract.methods.getOtherAccountInfo(_userID).call()
+		.then(function (account) {
+			//display others account info.php
+			$("#accountState").html("Account State: " + account.state);
+			$("#defaultCount").html("Default Count: " + account.defaultCount);
+		})
+}
+
+//gas200000,out of gas
+function invest(_fundID, _value) {
+	alert(_fundID + _value);
+	myContract.methods.invest(_fundID, _value).send({
+			from: ethereum.selectedAddress,
+			gas: 300000
+		})
+		.then(function (result) {
+			alert('Invest succeed!');
+		});
+}
+
+//newfund
+function newFund(_interest, _type, _minDeposit) {
+	myContract.methods.newFund(_interest, _type, _minDeposit * 24 * 60 * 60).send({
+		from: ethereum.selectedAddress,
+		gas: 300000
+	}, function (err, res) {
+		if (err == null) {
+			alert("Succeed!");
+		}
+		console.log(err);
+		console.log(res);
+	});
+}
+
+//ownAccountInfo
+function changeFundState(_fundID) {
+	alert("Changeing state of fund " + _fundID + "......");
+	myContract.methods.changeFundState(_fundID).send({
+			from: ethereum.selectedAddress
+		})
+		.then(function (result) {
+			if (result == null) {
+				alert("Change state failed");
+			} else {
+				alert("Successfully change fund " + _fundID + " state");
+
+				document.getElementById("fundState_" + _fundID).innerHTML = result.state;
+			}
+		})
+}
+
+///////////////////////////////////////////////////
+function changeFundDepositTime(fundID, time) {
+	myContract.methods.changeFundDepositTime(fundID, time).send({
+			from: ethereum.selectedAddress
+		})
+		.then(function (result) {
+			if (result == null) {
+				alert("Change Fund Deposit Time failed");
+			} else {
+				alert("Successfully changes fund " + fundID + " Deposit Time");
+			}
+		})
+}
+
+/////////////////////////////topup money
+function withdraw(_value) {
+	myContract.methods.withdraw(_value).call({
+			from: ethereum.selectedAddress
+		})
+		.then(function (result) {
+			if (result == true) {
+				alert('Withdraw '+_value+' pending......');
+			}
+		});
+}
+
+/////////////////////////////from invest
+function returnOnInvest(_investID, _value) {
+	console.log(_investID + " " + _value);
+	myContract.methods.returnOnInvest(_investID, _value).call({
+			from: ethereum.selectedAddress
+		})
+		.then(function (result) {
+			alert(result);
+		})
+}
+
+
+function fundTypeToStr(_type) {
+	switch (parseInt(_type)) {
+		case 1:
+			return "charity";
+		case 2:
+			return "projects";
+		case 3:
+			return "institution";
+		case 4:
+			return "personal";
+	}
+}
+
+function timeConverter(UNIX_timestamp) {
+	var a = new Date(UNIX_timestamp * 1000);
+	var months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 19, 11, 12];
+	var year = a.getFullYear();
+	var month = months[a.getMonth()];
+	var date = a.getDate();
+	var hour = a.getHours();
+	var min = a.getMinutes();
+	var sec = a.getSeconds();
+	var time = date + '/' + month + '/' + year + ' ' + hour + ':' + min + ':' + sec;
+	return time;
+}

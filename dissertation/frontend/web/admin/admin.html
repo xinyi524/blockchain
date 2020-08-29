@@ -1,0 +1,268 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Home</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link href="css/bootstrap-3.1.1.min.css" rel='stylesheet' type='text/css' />
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<!-- Custom Theme files -->
+	<link href="css/style.css" rel='stylesheet' type='text/css' />
+	<link href="css/font-awesome.css" rel="stylesheet">
+	<!----font-Awesome----->
+
+	<script type="text/javascript" src="js/web3.min.js"></script>
+	<script type="text/javascript" src="js/fundClass.js"></script>
+
+	<script type="text/javascript" src="web3/SuperABI.js"></script>
+	<script type="text/javascript" src="web3/SuperIndex.js"></script>
+	<script type="text/javascript" src="js/superScript.js"></script>
+
+</head>
+
+<body>
+	<header>
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">Admin</a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<!--/.navbar-collapse-->
+		</nav>
+	</header>
+
+	<!-- banner -->
+	<div class="courses_banner">
+		<div class="container">
+			<h3 class="pageTitle">Home</h3>
+			<p class="description">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lorem quam, adipiscing condimentum tristique vel, eleifend sed turpis. Pellentesque cursus arcu id magna euismod in elementum purus molestie.
+			</p>
+			<div class="breadcrumb1">
+				<ul>
+					<li class="icon6"><a href="index.php">Home</a></li>
+					<li class="current-page"></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- //banner -->
+
+	<div class="courses_box1">
+		<div class="container">
+			<div class="col-md-3">
+				<div class="courses_box1-left">
+
+					<button class="course-submit" style="width:100%" id="information">Overview</button>
+					<br>
+					<button class="course-submit" style="width:100%" id="investment">Investments</button>
+					<br>
+					<button class="course-submit" style="width:100%" id="user">User</button>
+					<br>
+					<button class="course-submit" style="width:100%" id="fund">Funds</button>
+					<br>
+
+				</div>
+			</div>
+
+			<div class="col-md-9 detail">
+
+				<div class="comment_section" id="_information">
+					<h4>OVERVIEW</h4>
+					<p id="superBalance">Balance</p>
+					<hr>
+					<p id="fundsNum1">Charity</p>
+					<hr>
+					<p id="fundsNum2">Projects</p>
+					<hr>
+					<p id="fundsNum3">Institutions</p>
+					<hr>
+					<p id="fundsNum4">Personal</p>
+				</div>
+
+				<div class="clearfix"></div>
+
+				<div class="comment_section" id="_user">
+					<h4>ALL USERS</h4>
+
+					<ul class="comment-list" id="allUsers"></ul>
+				</div>
+
+				<div class="clearfix"> </div>
+
+				<h2>FUNDS</h2>
+				<div class="course_list" id="_fund">
+					<div class="table-header clearfix">
+						<div class="id_col">ID</div>
+						<div class="name_col">BALANCE(Wei)</div>
+						<div class="duration_col">INTEREST</div>
+					</div>
+
+					<ul class="table-list" id="fundInfo">
+					</ul>
+
+				</div>
+
+				<div class="clearfix"> </div>
+
+				<h2>Investment</h2>
+				<div class="course_list" id="_transfer">
+					<div class="table-header clearfix">
+						<div class="id_col">ID</div>
+						<div class="name_col">FUND</div>
+						<div class="duration_col">VALUE(Wei)</div>
+						<div class="date_col">Date</div>
+					</div>
+
+					<ul class="table-list" id="investInfo">
+
+					</ul>
+				</div>
+
+			</div>
+			<div class="clearfix"> </div>
+
+		</div>
+
+	</div>
+
+	<!-- Modal 1 account inform-->
+	<div class="modal fade" id="accountInfo" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Account Infomation</h4>
+				</div>
+				<div class="modal-body">
+					<span id="shownInfo"></span>
+
+					<hr>
+					<div id="fundsOwn"></div>
+					<hr>
+					<div id="invested"></div>
+				</div>
+				<div class="modal-footer">
+
+					<button class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal 2 fund investors-->
+	<div class="modal fade" id="fundInvestorsInfo" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Investor Infomation</h4>
+				</div>
+				<div class="modal-body">
+					<p id="fundShownInfo"></p>
+					<hr>
+
+					<ul class="table-list" id="investors"></ul>
+
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="footer">
+		<div class="container">
+			<div class="col-md-3 grid_4">
+				<h3>About Us</h3>
+				<p>"This is Xinyi Li"</p>
+				<ul class="social-nav icons_2 clearfix">
+					<li><a href="#" class="twitter"><i class="fa fa-twitter"></i></a></li>
+					<li><a href="#" class="facebook"> <i class="fa fa-facebook"></i></a></li>
+					<li><a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+				</ul>
+			</div>
+			<div class="col-md-3 grid_4">
+				<h3>Quick Links</h3>
+				<ul class="footer_list">
+					<li><a href="#">- PRIOR LEARNING ASSESSMENT </a></li>
+					<li><a href="#">- INTERNATIONAL STUDENTS</a></li>
+					<li><a href="#">- CAREER OPPORTUNITIES</a></li>
+					<li><a href="#">- NEW STUDENT ORIENTATION</a></li>
+					<li><a href="#">- NEW CLASSROOM TECHNOLOGY</a></li>
+				</ul>
+			</div>
+			<div class="col-md-3 grid_4">
+				<h3>Contact Us</h3>
+				<address>
+					<strong>Contrary to popular belief</strong>
+					<br>
+					<span>4877 It is a long established</span>
+					<br><br>
+					<span>Contrary to popular , 15089</span>
+					<br>
+					<abbr>Telephone : </abbr> +1 (734) 123-4567
+					<br>
+					<abbr>Email : </abbr> <a href="mailto@example.com">info(at)Learn.com</a>
+				</address>
+			</div>
+			<div class="col-md-3 grid_4">
+				<h3>Working Hours</h3>
+				<table class="table_working_hours">
+					<tbody>
+						<tr class="opened_1">
+							<td class="day_label">monday</td>
+							<td class="day_value">9:30 am - 6.00 pm</td>
+						</tr>
+						<tr class="opened">
+							<td class="day_label">tuesday</td>
+							<td class="day_value">9:30 am - 6.00 pm</td>
+						</tr>
+						<tr class="opened">
+							<td class="day_label">wednesday</td>
+							<td class="day_value">9:30 am - 6.00 pm</td>
+						</tr>
+						<tr class="opened">
+							<td class="day_label">thursday</td>
+							<td class="day_value">9:30 am - 6.00 pm</td>
+						</tr>
+						<tr class="opened">
+							<td class="day_label">friday</td>
+							<td class="day_value">9:30 am - 3.00 pm</td>
+						</tr>
+						<tr class="closed">
+							<td class="day_label">saturday</td>
+							<td class="day_value closed"><span>Closed</span></td>
+						</tr>
+						<tr class="closed">
+							<td class="day_label">sunday</td>
+							<td class="day_value closed"><span>Closed</span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="clearfix"></div>
+			<div class="copy">
+				<p>Copyright &copy; 2015.Company name All rights reserved.</p>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

@@ -1,0 +1,599 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Home</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<!-- Custom Theme files -->
+	<link href="css/style.css" rel='stylesheet' type='text/css' />
+	<link href="css/font-awesome.css" rel="stylesheet">
+	<!----font-Awesome----->
+
+	<script type="text/javascript" src="js/web3.min.js"></script>
+
+	<script type="text/javascript" src="web3/UserABI.js"></script>
+	<script type="text/javascript" src="web3/index.js"></script>
+	<script type="text/javascript" src="js/script.js"></script>
+	<script type="text/javascript" src="js/fundClass.js"></script>
+
+</head>
+
+<body>
+	<header>
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="index.html">Financing</a>
+				</div>
+				<!--/.navbar-header-->
+				<div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" style="height: 1px;">
+					<ul class="nav navbar-nav">
+						<li class="dropdown">
+							<a href="#"><i class="fa fa-user"></i><span>Account</span></a>
+							<ul class="dropdown-menu">
+								<li id="userAddress"><a href="#"><span>Please login your MetaMask Account!</span></a></li>
+
+								<li>
+									<a href="#"><span class="changeBalance">Topup / Withdrow</span></a>
+								</li>
+								<li><a href="#"><span class="viewAccount">View Account Information</span></a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<!--/.navbar-collapse-->
+		</nav>
+	</header>
+
+	<!-- banner -->
+	<div class="courses_banner">
+		<div class="container">
+			<h3 class="pageTitle">Home</h3>
+			<p class="description">
+				Welcome to our financing platform
+			</p>
+			<div class="breadcrumb1">
+				<ul>
+					<li class="icon6"><a href="index.html">Home</a></li>
+					<li class="current-page"></li>
+				</ul>
+			</div>
+		</div>
+		<div class="details">
+			<div class="container">
+				<div class="col-sm-10 dropdown-buttons">
+
+					<div class="col-sm-4 dropdown-button">
+						<div class="input-group">
+							<input class="form-control has-dark-background" id="searchFundID" placeholder="Fund ID" type="text">
+						</div>
+					</div>
+					<div class="col-sm-2 submit_button">
+						<form>
+							<input class="submit_button" id="searchFund" type="submit" value="Search">
+						</form>
+					</div>
+
+					<!-- select-block -->
+					<div class="col-sm-4 select-block1">
+						<select id="sortElement">
+							<option value="0">All</option>
+							<option value="interest">Interest</option>
+							<option value="balance">Balance</option>
+							<option value="minDeposit">Min deposit time</option>
+						</select>
+					</div>
+
+					<div class="col-sm-2 submit_button">
+						<input type="submit" value="Sort" class="submit_button sort">
+					</div>
+
+					<div class="clearfix"></div>
+				</div>
+
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- //banner -->
+
+	<div class="grid_1">
+		<div class="container index">
+			<div class="col-md-4">
+				<div class="news">
+
+					<hr>
+					<h1>Information</h1>
+					<div class="section-content">
+						<article>
+							<figure class="date"><i class="fa fa-file-o"></i>Total Balance</figure>
+							<a href="#" id="superBalance"></a>
+						</article>
+						<article>
+							<figure class="date"><i class="fa fa-file-o"></i>Charity Funds</figure>
+							<a href="#" id="fundsNum1"></a>
+						</article>
+						<article>
+							<figure class="date"><i class="fa fa-file-o"></i>Projects</figure>
+							<a href="#" id="fundsNum2"></a>
+						</article>
+						<article>
+							<figure class="date"><i class="fa fa-file-o"></i>Institutions</figure>
+							<a href="#" id="fundsNum3"></a>
+						</article>
+						<article>
+							<figure class="date"><i class="fa fa-file-o"></i>Personal</figure>
+							<a href="#" id="fundsNum4"></a>
+						</article>
+
+					</div><!-- /.section-content -->
+
+					<div class="newFund">
+						<h1>New Funding Request</h1>
+						<div class="form-group">
+							<select autocomplete="off" class="required form-control" id="newFundType" value="">
+								<option value="1">Charity</option>
+								<option value="2">Projects</option>
+								<option value="3">Institutions</option>
+								<option value="4">Personal</option>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<p>Interest</p>
+							<input type="number" class="required form-control" placeholder="Annual interest *" id="newFundInterest">
+						</div>
+
+						<div class="form-group">
+							<p>Minimum deposit time (days)</p>
+							<input type="number" class="required form-control" placeholder="Minimum deposit time (days) *" id="minDeposit">
+						</div>
+
+						<button class="course-submit" id="fundConfirm" click="">Confirm</button>
+
+					</div>
+
+				</div><!-- /.news-small -->
+
+			</div>
+
+			<div class="col-md-8 grid_1_right">
+				<h2><span>Lists</span></h2>
+
+				<div class="but_list">
+					<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs" id="search_result">
+						<ul id="myTab" class="nav nav-tabs nav-tabs1" role="tablist">
+							<li role="presentation"><a href="#charity" role="tab" id="charity-tab" data-toggle="tab" aria-controls="charity" aria-expanded="true">Charity</a></li>
+							<li role="presentation"><a href="#projects" role="tab" id="projects-tab" data-toggle="tab" aria-controls="projects">Project</a></li>
+							<li role="presentation"><a href="#institution" role="tab" id="institution-tab" data-toggle="tab" aria-controls="institution">Institutions</a></li>
+							<li role="presentation"><a href="#personal" role="tab" id="personal-tab" data-toggle="tab" aria-controls="personal">Personal</a></li>
+							<li role="presentation"><a href="#closedlist" role="tab" id="closedlist-tab" data-toggle="tab" aria-controls="closedlist">Closed</a></li>
+
+						</ul>
+
+						<div id="myTabContent" class="tab-content">
+							<div role="tabpanel" class="tab-pane fade in active" id="charity" aria-labelledby="charity-tab"></div>
+
+							<div role="tabpanel" class="tab-pane fade in active" id="projects" aria-labelledby="charity-tab"></div>
+
+							<div role="tabpanel" class="tab-pane fade in active" id="institution" aria-labelledby="charity-tab"></div>
+
+							<div role="tabpanel" class="tab-pane fade in active" id="personal" aria-labelledby="charity-tab"></div>
+
+							<div role="tabpanel" class="tab-pane fade in active" id="closedlist" aria-labelledby="charity-tab"></div>
+						</div>
+
+						<div class="name_col"><a href="#" class="fundBalance"></a></div>
+
+					</div>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+
+		<!--		*****************************************-->
+		<div class="container ownAccountInfo">
+
+
+			<div class="container">
+				<div class="col-md-3">
+					<div class="courses_box1-left">
+						<form>
+							<!-- select-block -->
+							<div class="select-block1">
+								<select id="historyType">
+									<option value="allIandF">All</option>
+									<option value="invest">Investments</option>
+									<option value="fund">Own Funds</option>
+								</select>
+							</div>
+
+							<input type="submit" value="search" class="course-submit" id="historySearchSubmit">
+
+						</form>
+					</div>
+
+					<ul class="posts">
+						<h3>More Information</h3>
+						<li>
+							<article class="entry-item">
+								<div class="entry-content">
+									<h6>Balance</h6>
+									<p id="accountBalance"></p>
+								</div>
+								<div class="clearfix"> </div>
+							</article>
+						</li>
+						<hr>
+						<li>
+							<article class="entry-item">
+								<div class="entry-content">
+									<h6>Account state</h6>
+									<p id="accountState"></p>
+								</div>
+								<div class="clearfix"> </div>
+							</article>
+						</li>
+
+						<hr>
+						<li>
+							<article class="entry-item">
+								<div class="entry-content">
+									<h6>Default Times</h6>
+									<p id="accountDefaultCount"></p>
+								</div>
+								<div class="clearfix"> </div>
+							</article>
+						</li>
+
+					</ul>
+				</div>
+
+				<div class="col-md-9">
+
+					<div class="course_list ownFundsList">
+						<h2>Own Funds</h2>
+						<div class="table-header clearfix">
+							<div class="id_col">ID</div>
+							<div class="date_col">Interest</div>
+						</div>
+
+						<ul class="table-list">
+							<div id="ownFundInfo"></div>
+						</ul>
+					</div>
+
+					<div class="clearfix"> </div>
+
+					<div class="course_list ownInvestmentsList">
+						<h2>Investments</h2>
+						<div class="table-header clearfix">
+							<div class="id_col">Fund</div>
+						</div>
+						<ul class="table-list">
+							<div id="investInfo"></div>
+						</ul>
+					</div>
+
+					<div class="clearfix"> </div>
+
+					<div class="course_list ownFundPending">
+						<h2>Pending Return Request</h2>
+						<div class="table-header clearfix">
+							<div class="id_col">Fund</div>
+							<div class="name_col">Value</div>
+							<div class="duration_col">Date</div>
+						</div>
+						<ul class="table-list">
+							<div id="investInfo"></div>
+						</ul>
+					</div>
+
+					<div class="clearfix"> </div>
+
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Modal Invest-->
+	<div class="modal fade" id="investInfoMod" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Invest</h4>
+				</div>
+
+				<div class="modal-body">
+					<form>
+						<p><span>FundsID:</span>
+							<span id="investFundID"></span></p>
+						<input type="number" id="investValue" placeholder="value (Wei)">
+						<input type="submit" id="investValueSubmit" value="Submit">
+					</form>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--  account information-->
+	<div class="modal fade" id="userInfo" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Funder account </h4>
+				</div>
+				<div class="modal-body">
+					<div id="otherUserAddress"></div>
+					<hr>
+					<p id="accountState"></p>
+					<p id="defaultCount"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!--**********************Top up modal-->
+	<div class="modal fade" id="topupORwithdraw" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Topup / Withdrow</h4>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<select class="required form-control" id="tORw">
+								<option value="t">Topup</option>
+								<option value="w">Withdraw</option>
+							</select>
+						</div>
+						<hr>
+						<div class="form-group">
+							<input type="number" class="required form-control" placeholder="Value *" name="value" value="" id="changeValue">
+						</div>
+
+						<div class="form-group">
+							<input type="submit" id="balanceChangeSubmit" value="Submit">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal fund delete-->
+	<div class="modal fade" id="fundDeleteMod" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Delete Fund</h4>
+				</div>
+				<div class="modal-body fundDetail">
+
+					<p>Are you sure you want to delete that fund?</p>
+					<p id="closeFundID">FundsID:</p>
+
+					<button type="button" class="btn btn-default" data-dismiss="modal" id="fundCloseSubmit">Submit</button>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal withdraw invest-->
+	<div class="modal fade" id="investWithdrawMod" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Invest Withdraw</h4>
+				</div>
+				<div class="modal-body fundDetail">
+					<form>
+						<p>FundID: <span id="investWithdrawFundID"></span></p>
+						<input type="number" id="investWithdrawValue" placeholder="value (Wei)">
+						<input type="submit" id="investWithdrawValueSubmit" value="Submit">
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal changeFundMinDeposit-->
+	<div class="modal fade" id="changeFundMinDepositMod" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Change fund deposit time</h4>
+				</div>
+				<div class="modal-body fundDetail">
+					<form>
+						<p><span>FundID: </span> <span id="changeFundMinDepositFundID"></span></p>
+						<input type="number" id="newDepositTime" placeholder="(Days)">
+						<input type="submit" class="FundMinDepositSubmit" value="Submit">
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="footer">
+		<div class="container">
+			<div class="col-md-3 grid_4">
+				<h3>About Us</h3>
+				<p>"This is Xinyi Li"</p>
+				<ul class="social-nav icons_2 clearfix">
+					<li><a href="#" class="twitter"><i class="fa fa-twitter"></i></a></li>
+					<li><a href="#" class="facebook"> <i class="fa fa-facebook"></i></a></li>
+					<li><a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+				</ul>
+			</div>
+			<div class="col-md-3 grid_4">
+				<h3>Quick Links</h3>
+				<ul class="footer_list">
+					<li><a href="#">- WEB1</a></li>
+					<li><a href="#">- WEB2</a></li>
+					<li><a href="#">- WEB3</a></li>
+					<li><a href="#">- WEB4</a></li>
+					<li><a href="#">- WEB5</a></li>
+				</ul>
+			</div>
+			<div class="col-md-3 grid_4">
+				<h3>Contact Us</h3>
+				<address>
+					<strong>Contrary to popular belief</strong>
+					<br>
+					<span>4877 It is a long established</span>
+					<br><br>
+					<span>Contrary to popular , 15089</span>
+					<br>
+					<abbr>Telephone : </abbr> +1 (734) 123-4567
+					<br>
+					<abbr>Email : </abbr> <a href="mailto@example.com">info(at)Learn.com</a>
+				</address>
+			</div>
+			<div class="col-md-3 grid_4">
+				<h3>Working Hours</h3>
+				<table class="table_working_hours">
+					<tbody>
+						<tr class="opened_1">
+							<td class="day_label">monday</td>
+							<td class="day_value">9:30 am - 6.00 pm</td>
+						</tr>
+						<tr class="opened">
+							<td class="day_label">tuesday</td>
+							<td class="day_value">9:30 am - 6.00 pm</td>
+						</tr>
+						<tr class="opened">
+							<td class="day_label">wednesday</td>
+							<td class="day_value">9:30 am - 6.00 pm</td>
+						</tr>
+						<tr class="opened">
+							<td class="day_label">thursday</td>
+							<td class="day_value">9:30 am - 6.00 pm</td>
+						</tr>
+						<tr class="opened">
+							<td class="day_label">friday</td>
+							<td class="day_value">9:30 am - 3.00 pm</td>
+						</tr>
+						<tr class="closed">
+							<td class="day_label">saturday</td>
+							<td class="day_value closed"><span>Closed</span></td>
+						</tr>
+						<tr class="closed">
+							<td class="day_label">sunday</td>
+							<td class="day_value closed"><span>Closed</span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="clearfix"></div>
+			<div class="copy">
+				<p>Copyright &copy; 2019.Company name All rights reserved.</p>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+<script>
+	$("#searchFund").click(function() {
+		var fundID = $("#searchFundID").val();
+
+		if (fundID != null) {
+			for (var i = 0; i < allFunds.length; i++) {
+				if (i == fundID) {
+					$(".events_box").empty();
+
+					var temp = fundClass.fundsInfo(allFunds[i].id, allFunds[i].owner, allFunds[i].state, allFunds[i].accountType, allFunds[i].balance, allFunds[i].interest, allFunds[i].minDeposit);
+
+					break;
+				}
+			}
+		}
+	});
+
+	$(".sort").click(function() {
+		var sort = $("#sortElement").val();
+		var result = new Array;
+		alert(sort);
+
+		if (sort != 0) {
+
+			result = allFunds;
+
+			for (var i = 0; i < result.length; i++) {
+				for (var j = 0; j < result.length - 1 - i; j++) {
+					if (result[j].balance > result[j + 1].balance) {
+						var temp = result[j + 1]; //元素交换
+						result[j + 1] = result[j];
+						result[j] = temp;
+					}
+				}
+			}
+			console.log(result);
+			/////////////////////////////////////////////////////
+			$(".events_box").empty();
+			for (var i = 0; i < result.length; i++) {
+				var temp = fundClass.fundsInfo(result[i].id, result[i].owner, result[i].state, result[i].accountType, result[i].balance, result[i].interest, result[i].minDeposit);
+			}
+		}
+
+
+
+	});
+
+</script>
+
+</html>
