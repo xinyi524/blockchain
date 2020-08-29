@@ -44,5 +44,6 @@ function generateZombie(id, name, dna) {
         zombieName: name,
         zombieDescription: "A Level 1 CryptoZombie",
 }
+//
     return zombieDetails
 }
